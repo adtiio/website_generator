@@ -206,7 +206,7 @@
                     </button>
                 </div>
                 <div class="modal-body">
-                    <form action="http://localhost:5454/addProduct" method="post" class="product-form">
+                    <form action="/addProduct" method="post" class="product-form">
                         <div class="form-group">
                             <label for="image" class="form-label">Image URL</label>
                             <input type="text" class="form-control" id="image" name="image" placeholder="Paste image URL">
@@ -242,7 +242,7 @@
                     </button>
                 </div>
                 <div class="modal-body">
-                    <form action="http://localhost:5454/editProduct" method="post" class="product-form">
+                    <form action="/editProduct" method="post" class="product-form">
                         <div class="form-group">
                             <label for="image" class="form-label">product number you want to update</label>
                             <input type="number" class="form-control" id="idx" name="idx" placeholder="product number">
@@ -283,7 +283,7 @@
                     </button>
                 </div>
                 <div class="modal-body">
-                    <form action="http://localhost:5454/removeProduct" method="post" class="product-form">
+                    <form action="/removeProduct" method="post" class="product-form">
                             <label for="image" class="form-label">product number you want to remove</label>
                             <input type="number" class="form-control" id="idx" name="idx" placeholder="product number">
                         <button type="submit" class="btn btn-submit btn-block">Submit</button>
