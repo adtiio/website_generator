@@ -16,8 +16,8 @@ FROM openjdk:17.0.1-jdk-slim
 # Set the working directory to /app in the container
 WORKDIR /app
 
-# Copy the JAR file from the build stage
-COPY --from=build /trial/target/pickify-0.0.1-SNAPSHOT.jar pickify.jar
+# Copy the JAR file from the build stage, adjusted for the correct file name
+COPY --from=build /trial/target/trial-0.0.1-SNAPSHOT.jar pickify.jar
 
 # Expose port 8081
 EXPOSE 8081
