@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>AI Chatbot</title>
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+  <!-- FontAwesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <!-- Bootstrap CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+  <style>
+    body, html {
+      height: 100%;
+      margin: 0;
+      font-family: 'Poppins', sans-serif;
+      background-color: #343541;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* Main Chat Container */
+    .chat-container {
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      height: 100%;
+      max-width: 900px;
+      margin: auto;
+      width: 100%;
+      padding: 20px;
+      background-color: #444654;
+      border-radius: 10px;
+    }
+
+    /* Chat Messages Box */
+    .chat-box {
+      background-color: #343541;
+      border-radius: 10px;
+      overflow-y: auto;
+      padding: 20px;
+      margin-bottom: 20px;
+      flex-grow: 1;
+      max-height: 80vh;
+      color: #d1d5db;
+    }
+
+    /* Messages */
+    .message {
+      margin-bottom: 15px;
+      padding: 15px;
+      border-radius: 10px;
+      max-width: 80%;
+      font-size: 1rem;
+      line-height: 1.5;
+    }
+
+    .message.user {
+      background-color: #007bff;
+      color: white;
+      margin-left: auto;
+      text-align: right;
+    }
+
+    .message.bot {
+      background-color: #40414f;
+      color: #d1d5db;
+    }
+
+    /* Input Container */
+    .input-container {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    /* Chat Input */
+    .chat-input {
+      flex-grow: 1;
+      padding: 15px;
+      font-size: 1rem;
+      border: 1px solid #555;
+      border-radius: 10px;
+      background-color: #40414f;
+      color: #d1d5db;
+    }
+
+    .chat-input::placeholder {
+      color: #9ca3af;
+    }
+
+    .chat-input:focus {
+      outline: none;
+      border-color: #007bff;
+    }
+
+    /* Send Button */
+    .send-btn {
+      background-color: #007bff;
+      color: white;
+      border: none;
+      padding: 12px 20px;
+      border-radius: 10px;
+      cursor: pointer;
+      transition: background-color 0.3s ease, transform 0.2s ease;
+    }
+
+    .send-btn:hover {
+      background-color: #0056b3;
+    }
+
+    .send-btn:active {
+      transform: scale(0.98);
+    }
+
+    /* Loader Animation */
+    .loader {
+      display: none;
+      margin-left: 10px;
+      border: 4px solid #f3f3f3;
+      border-radius: 50%;
+      border-top: 4px solid #007bff;
+      width: 20px;
+      height: 20px;
+      animation: spin 1s linear infinite;
+    }
+
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+
+    /* Scrollbars */
+    .scrollable {
+      overflow-y: auto;
+    }
+
+    .scrollable::-webkit-scrollbar {
+      width: 8px;
+    }
+
+    .scrollable::-webkit-scrollbar-thumb {
+      background-color: #007bff;
+      border-radius: 10px;
+    }
+
+    /* Responsive Styles */
+    @media (max-width: 768px) {
+      .chat-container {
+        padding: 10px;
+      }
+
+      .message {
+        font-size: 0.9rem;
+        padding: 12px;
+      }
+
+      .chat-input {
+        padding: 10px;
+        font-size: 0.9rem;
+      }
+
+      .send-btn {
+        padding: 10px 15px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="chat-container">
+    <div class="chat-box scrollable" id="chatBox">
+      <!-- Chat messages will be appended here -->
+    </div>
+    <div class="input-container">
+      <input type="text" id="chatInput" class="chat-input" placeholder="Type your message..." autocomplete="off">
+      <button id="sendBtn" class="send-btn">Send</button>
+      <div class="loader" id="loader"></div>
+    </div>
+  </div>
+
+  <script>
+    const chatInput = document.getElementById('chatInput');
+    const chatBox = document.getElementById('chatBox');
+    const sendBtn = document.getElementById('sendBtn');
+    const loader = document.getElementById('loader');
+
+    // Function to add a message to the chat
+    function addMessageToChat(content, sender) {
+      const message = document.createElement('div');
+      message.classList.add('message', sender === 'user' ? 'user' : 'bot');
+      message.innerText = content;
+      chatBox.appendChild(message);
+      chatBox.scrollTop = chatBox.scrollHeight; // Auto-scroll to bottom
+    }
+
+    // Function to send a message to the AI
+    async function sendMessage() {
+      const userMessage = chatInput.value.trim();
+      if (!userMessage) return;
+
+      // Add user's message to chat
+      addMessageToChat(userMessage, 'user');
+      chatInput.value = '';
+
+      // Show loader
+      loader.style.display = 'block';
+
+      try {
+        // Send the request to the backend API
+        const response = await fetch('http://localhost:5454/ai/chat/simple', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(userMessage)
+        });
+
+        if (!response.ok) {
+          throw new Error('Failed to get AI response');
+        }
+
+        const responseData = await response.json();
+        const botMessage = responseData.candidates[0].content.parts[0].text;
+
+        // Add AI's message to chat
+        addMessageToChat(botMessage, 'bot');
+      } catch (error) {
+        addMessageToChat('Error: Unable to connect to the AI', 'bot');
+      } finally {
+        // Hide loader
+        loader.style.display = 'none';
+      }
+    }
+
+    // Event listeners
+    sendBtn.addEventListener('click', sendMessage);
+    chatInput.addEventListener('keypress', function (e) {
+      if (e.key === 'Enter') {
+        sendMessage();
+      }
+    });
+  </script>
+
+  <!-- Bootstrap JS -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

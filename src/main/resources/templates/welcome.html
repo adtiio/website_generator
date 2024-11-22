@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>No Code Website Generator</title>
+    <style>
+        /* Global styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Arial', sans-serif;
+        }
+
+        body {
+            background-color: #1e1b2a; /* Updated background color */
+            color: white;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            height: 100vh;
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* Background lighting effect */
+        body::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(128, 0, 128, 0.6), transparent);
+            transform: translate(-50%, -50%);
+            animation: pulse 5s infinite;
+            z-index: 0;
+        }
+
+        @keyframes pulse {
+            0% {
+                transform: translate(-50%, -50%) scale(1);
+                opacity: 0.8;
+            }
+            50% {
+                transform: translate(-50%, -50%) scale(1.1);
+                opacity: 1;
+            }
+            100% {
+                transform: translate(-50%, -50%) scale(1);
+                opacity: 0.8;
+            }
+        }
+
+        .welcome-text {
+            font-size: 3em;
+            opacity: 0;
+            transform: translateY(-20px);
+            animation: slideIn 1.5s ease-in-out forwards;
+            margin-bottom: 40px;
+            text-align: center;
+        }
+
+        @keyframes slideIn {
+            0% {
+                opacity: 0;
+                transform: translateY(-50px);
+            }
+            100% {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .container {
+            z-index: 1; /* Make sure the content is above the background */
+            text-align: center;
+            padding: 20px;
+            border-radius: 10px;
+            background-color: rgba(128, 0, 128, 0.6);
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+            width: 90%;
+            max-width: 600px;
+            animation: fadeIn 1.5s ease-in-out forwards;
+            border: 2px solid rgba(255, 255, 255, 0.2); /* Added glowing effect on border */
+        }
+
+        .container:hover {
+            border-color: rgba(255, 255, 255, 0.6); /* Increase glow effect on hover */
+            transition: border-color 0.3s ease;
+        }
+
+        .website-type-heading {
+            margin-top: 20px;
+            font-size: 1.7em;
+            color: rgba(255, 255, 255, 0.9);
+            text-align: center;
+        }
+
+        .dropdown-container {
+            margin-top: 20px;
+            text-align: center;
+        }
+
+        .website-type {
+            padding: 10px;
+            font-size: 1.2em;
+            border-radius: 5px;
+            border: none;
+            background-color: rgba(128, 0, 128, 0.8);
+            color: white;
+            width: 100%;
+            max-width: 300px;
+            cursor: pointer;
+        }
+
+        /* Button styles */
+        .submit-btn {
+            margin-top: 20px;
+            padding: 12px 20px;
+            font-size: 1.2em;
+            border: none;
+            border-radius: 5px;
+            background-color: rgba(128, 0, 128, 0.8);
+            color: white;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .submit-btn:hover {
+            background-color: rgba(128, 0, 128, 1);
+        }
+
+        /* Responsive Design */
+        @media (max-width: 600px) {
+            .container {
+                width: 90%;
+            }
+
+            .welcome-text {
+                font-size: 2em;
+            }
+
+            .website-type-heading {
+                font-size: 1.2em;
+            }
+
+            .website-type {
+                font-size: 1em;
+            }
+
+            .submit-btn {
+                font-size: 1em;
+            }
+        }
+
+        @keyframes fadeIn {
+            0% {
+                opacity: 0;
+            }
+            100% {
+                opacity: 1;
+            }
+        }
+    </style>
+</head>
+<body>
+    <h1 class="welcome-text">Welcome to the No Code Website Generator</h1>
+
+    <div class="container">
+        <h2 class="website-type-heading">Type of the Website You Want to Create</h2>
+        <form action="/welcome" method="POST">
+            <div class="dropdown-container">
+                <select id="webType" name="webType" class="website-type" required>
+                    <option value="" disabled selected>Select website type</option>
+                    <option value="ecommerce">Ecommerce</option>
+                    <option value="blogging">Blogging Website</option>
+                    <option value="ai-chatbot">AI Chatbot</option>
+                    <option value="todo-list">To-do List</option>
+                    <option value="video-streaming">Video Stream</option>
+                    <option value="ethereum-tracker">Ethereum Deposit Tracker</option>
+                </select>
+            </div>
+            <button type="submit" class="submit-btn">Submit</button>
+        </form>
+    </div>
+
+</body>
+</html>

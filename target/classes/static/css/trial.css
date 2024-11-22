@@ -1,0 +1,444 @@
+/* General Reset */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+   
+}
+
+/* Navbar */
+.navbar {
+    font-family: Arial, sans-serif;
+    font-size: 1.1rem;
+}
+.navbar-brand {
+    font-size: 1.8rem;
+    font-weight: bold;
+    color: #f8f9fa;
+}
+
+/* Hero Section */
+.hero-section {
+    position: relative;
+    height: 40vh;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    color: white;
+}
+.hero-section .hero-bg-img {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    z-index: -1;
+    filter: brightness(50%);
+}
+.hero-section h1 {
+    font-size: 2.5rem;
+    margin-bottom: 10px;
+}
+.hero-section p {
+    font-size: 1.2rem;
+    margin-bottom: 20px;
+}
+.hero-section .btn {
+    font-size: 1.1rem;
+    padding: 8px 16px;
+}
+
+/* Product Section */
+.container-fluid {
+    padding-left: 100px !important;    
+    padding-right: 100px !important;
+}
+ 
+/* Remove Container Padding */
+.row {
+    margin-right: 0;
+    margin-left: 0;
+}
+
+/* Product Card */
+.product-card {
+    transition: transform 0.3s, box-shadow 0.3s;
+    overflow: hidden;
+    border-radius: 8px;
+    margin-bottom: 1rem;
+}
+.product-card:hover {
+    transform: scale(1.05);
+    box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2);
+}
+.product-image-container {
+    position: relative;
+    overflow: hidden;
+}
+.product-image-container img {
+    transition: transform 0.3s ease-in-out;
+}
+/* Product Image Container */
+.product-image-container {
+    width: 100%; /* Full width of the card */
+    height: 250px; /* Fixed height to maintain uniformity across cards */
+    overflow: hidden; /* Ensures any excess image is cropped */
+    position: relative;
+}
+.product-card:hover .product-image-container img {
+    transform: scale(1.1);
+}
+
+/* Product Image Styling */
+.product-image-container img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover; /* Crops the image to fill the container proportionally */
+}
+
+
+.product-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    color: white;
+    opacity: 0;
+    transition: opacity 0.3s;
+}
+.product-card:hover .product-overlay {
+    opacity: 1;
+}
+
+/* Card Content */
+.card-title {
+    font-size: 1.2rem;
+    color: #333;
+    margin-top: 10px;
+}
+.card-description {
+    font-size: 0.9rem;
+    color: #777;
+    margin-bottom: 10px;
+}
+.price {
+    margin-top: 10px;
+    font-size: 1.1rem;
+}
+.original-price {
+    font-size: 0.9rem;
+    color: #999;
+    text-decoration: line-through;
+}
+.discounted-price {
+    color: #79197e;
+    font-weight: bold;
+}
+.discount-percentage {
+    font-size: 0.9rem;
+    color: #28a745;
+    font-weight: bold;
+}
+
+/* Footer */
+footer {
+    background: #111;
+    color: #f8f9fa;
+    padding: 1.5rem;
+    font-size: 0.9rem;
+}
+
+/* Responsive Styles */
+@media (max-width: 1200px) {
+    .col-md-3 {
+        flex: 0 0 20%;
+        max-width: 20%;
+    }
+}
+@media (max-width: 992px) {
+    .col-md-3 {
+        flex: 0 0 25%;
+        max-width: 25%;
+    }
+}
+@media (max-width: 768px) {
+    .col-md-3 {
+        flex: 0 0 50%;
+        max-width: 50%;
+    }
+}
+@media (max-width: 576px) {
+    .col-md-3 {
+        flex: 0 0 100%;
+        max-width: 100%;
+    }
+}
+
+.success-message {
+    background-color: #28a745;
+    color: white;
+    padding: 10px;
+    border-radius: 5px;
+    margin-top: 10px;
+    text-align: center;
+}
+/* Chat Button */
+.chat-button {
+    position: fixed;
+    top: 80px;
+    right: 20px;
+    width: 50px;
+    height: 50px;
+    background-color: #1e90ff; /* Softer blue for button */
+    border-radius: 50%;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+    cursor: pointer;
+    z-index: 1000;
+    color: white;
+    font-size: 1.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: transform 0.2s;
+}
+
+.chat-button:hover {
+    transform: scale(1.1);
+}
+
+/* Chat Popup */
+.chat-popup {
+    position: fixed;
+    top: -300px; /* Initially hidden */
+    right: 0;
+    width: 70%; /* Keep the popup width at 70% */
+    height: 180px; /* Keep the popup height the same */
+    padding: 15px;
+    background: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%); /* Gradient background */
+    color: white;
+    box-shadow: 0px 6px 15px rgba(0, 0, 0, 0.3);
+    border-radius: 25px; /* Rounded corners */
+    z-index: 1000;
+    transition: top 0.5s ease, background-color 0.3s ease;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+/* Show Chat Popup */
+.chat-popup.show {
+    top: 100px; /* Slide down */
+}
+
+/* Close Button */
+#close-chat {
+    position: absolute;
+    top: 10px;
+    right: 20px;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    font-size: 1.2rem;
+    color: #f8f9fa;
+}
+
+#close-chat:hover {
+    color: #ffffff;
+}
+
+/* Chat Form */
+#chat-form {
+    width: 90%; /* Center form within popup */
+    display: flex;
+    flex-direction: column;
+    margin-top: 5px;
+    align-items: center;
+}
+
+/* Larger, centered input field */
+#chat-input {
+    width: 95%; /* Increase width within popup */
+    height: 80px; /* Larger input height for typing */
+    padding: 12px;
+    border-radius: 20px; /* Highly rounded corners */
+    border: none;
+    outline: none;
+    font-size: 1rem;
+    color: #333;
+    background-color: #ffffff; /* White background for contrast */
+}
+
+#chat-input::placeholder {
+    color: #999; /* Softer placeholder color */
+}
+
+/* Adjust button placement */
+#chat-form button {
+    margin-top: 10px; /* Add margin to separate from input */
+    padding: 10px 30px;
+    background-color: #ff6b6b;
+    color: white;
+    border: none;
+    border-radius: 20px; /* Rounded button corners */
+    cursor: pointer;
+    font-size: 1rem;
+}
+
+#chat-form button:hover {
+    background-color: #ff8787; /* Slightly lighter on hover */
+}
+
+
+/*----------------------------------------------------------------*/
+
+/* Global Styles */
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f4f4f4;
+}
+
+/* Chatbot button */
+#chatbotBtn {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    border-radius: 50%;
+    width: 60px;  /* Slightly larger button */
+    height: 60px;  /* Slightly larger button */
+    background-color: #61dafb;  /* Chatbot button color */
+    color: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    cursor: pointer;
+    font-size: 24px;  /* Larger text for better visibility */
+}
+
+/* Chatbot modal */
+#chatbotModal {
+    display: none; /* Initially hidden */
+    position: fixed;
+    top: 0;
+    right: 0;
+    width: 400px; /* Set fixed width */
+    height: 80%; /* Full height of the page */
+    background-color: #282c34; /* Dark background for the modal */
+    box-shadow: -2px 0 10px rgba(0, 0, 0, 0.1);
+    border-left: 1px solid #dee2e6;
+    z-index: 1000;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    margin-top: 80px;  /* Margin from the top */
+}
+
+/* Header */
+.chat-header {
+    background-color: #282c34;
+    color: #61dafb;  /* Match the button color */
+    padding: 15px;
+    text-align: center;
+    font-size: 18px;
+    position: relative;
+}
+
+/* Close button */
+#closeChat {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    font-size: 20px;
+    color: #61dafb;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+}
+
+/* Chat Body */
+.chat-body {
+    flex: 1;
+    overflow-y: auto;
+    padding: 15px;
+    background-color: #333;  /* Dark background */
+    color: #fff;  /* Light text color */
+}
+
+/* Message Styles */
+.message {
+    margin-bottom: 10px;
+    padding: 10px;
+    border-radius: 8px;
+    max-width: 75%;
+}
+
+.message.user {
+    background-color: #61dafb;  /* Light blue for user messages */
+    color: black;  /* Dark text color */
+    align-self: flex-end;
+}
+
+.message.bot {
+    background-color: #444;  /* Dark background for bot messages */
+    color: #fff;  /* Light text color */
+    align-self: flex-start;
+}
+
+/* Footer */
+.chat-footer {
+    padding: 10px;
+    background-color: #282c34;  /* Same color as header */
+    border-top: 1px solid #444;
+    display: flex;
+}
+
+.chat-footer input {
+    flex: 1;
+    background-color: #444;
+    color: #fff;
+    border-radius: 4px;
+    border: 1px solid #ced4da;
+    padding: 10px;
+    margin-right: 10px;
+}
+
+.chat-footer button {
+    padding: 10px 15px;
+    background-color: #61dafb;  /* Same color as button */
+    color: black;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+/* Input Field Focus Styles */
+.chat-footer input:focus {
+    outline: none;
+    border-color: #61dafb;
+}
+
+/* Hover effects for buttons */
+.chat-footer button:hover, #chatbotBtn:hover {
+    background-color: #4fa3d1;  /* Slightly darker shade of blue */
+}
+
+/* Optional Scrollbar Styles */
+.chat-body::-webkit-scrollbar {
+    width: 8px;
+}
+
+.chat-body::-webkit-scrollbar-thumb {
+    background-color: #61dafb;
+    border-radius: 4px;
+}
+
+.chat-body::-webkit-scrollbar-track {
+    background-color: #333;
+}

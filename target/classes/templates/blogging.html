@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title>Beautiful Blog - Modern and Responsive</title>
+  <style>
+    /* Import Google Fonts */
+    @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap');
+    @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&display=swap');
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Roboto', sans-serif;
+      background-color: #f4f4f4;
+      color: #333;
+      line-height: 1.6;
+      overflow-x: hidden;
+      transition: background-color 0.3s ease;
+    }
+
+    /* Header Section */
+    header {
+      background-image: linear-gradient(to right, #4b79a1, #283e51);
+      color: white;
+      padding: 60px 20px;
+      text-align: center;
+    }
+
+    header h1 {
+      font-family: 'Playfair Display', serif;
+      font-size: 3rem;
+      letter-spacing: 1px;
+    }
+
+    header p {
+      font-size: 1.2rem;
+      margin-top: 10px;
+    }
+
+    /* Blog Content Section */
+    .blog-container {
+      max-width: 1200px;
+      margin: 30px auto;
+      padding: 20px;
+      background-color: white;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+      border-radius: 8px;
+    }
+
+    .blog-header {
+      text-align: center;
+    }
+
+    .blog-header h2 {
+      font-size: 2.5rem;
+      color: #283e51;
+    }
+
+    .blog-meta {
+      font-size: 0.9rem;
+      color: #888;
+      margin-top: 10px;
+    }
+
+    /* Author Section */
+    .author-info {
+      display: flex;
+      align-items: center;
+      margin-top: 30px;
+      color: #141414;
+    }
+
+    .author-info img {
+      width: 60px;
+      height: 60px;
+      border-radius: 50%;
+      margin-right: 20px;
+      color: #141414;
+    }
+
+    .author-info div {
+      font-size: 1rem;
+    }
+
+    /* Blog Content */
+    .blog-content {
+      margin-top: 40px;
+      line-height: 1.8;
+      color:#141414
+    }
+
+    .blog-content h3 {
+      font-size: 2rem;
+      margin: 30px 0 20px;
+      color: #4b79a1;
+    }
+
+    .blog-content img {
+      width: 100%;
+      border-radius: 8px;
+      margin: 20px 0;
+    }
+
+    .blog-content p {
+      font-size: 1.1rem;
+      margin-bottom: 20px;
+    }
+
+    /* Responsive Images */
+    @media (max-width: 768px) {
+      header h1 {
+        font-size: 2.2rem;
+      }
+
+      .blog-header h2 {
+        font-size: 2rem;
+      }
+
+      .author-info {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+
+      .author-info img {
+        margin-bottom: 10px;
+      }
+
+      .blog-content h3 {
+        font-size: 1.6rem;
+      }
+    }
+
+    /* Floating back-to-top button */
+    .back-to-top {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      background-color: #4b79a1;
+      color: white;
+      padding: 10px 15px;
+      border-radius: 50%;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+      cursor: pointer;
+      display: none;
+    }
+
+    .back-to-top:hover {
+      background-color: #283e51;
+    }
+
+    /* Dark mode toggle button */
+    .dark-mode-btn {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      background-color: #4b79a1;
+      color: white;
+      padding: 10px 20px;
+      border: none;
+      cursor: pointer;
+      font-size: 1rem;
+      border-radius: 5px;
+    }
+
+    .dark-mode-btn:hover {
+      background-color: #283e51;
+    }
+
+    /* Dark Mode Styles */
+    body.dark-mode {
+      background-color: #1e1e1e;
+      color: #ccc;
+    }
+
+    body.dark-mode header {
+      background-image: linear-gradient(to right, #141414, #282828);
+    }
+
+    body.dark-mode .blog-container {
+      background-color: #333;
+    }
+
+    body.dark-mode h2,
+    body.dark-mode h3 {
+      color: #4b79a1;
+    }
+
+    body.dark-mode .dark-mode-btn {
+      background-color: #f4f4f4;
+      color: #333;
+    }
+
+    footer {
+      text-align: center;
+      margin-top: 50px;
+      padding: 20px;
+      background-color: #4b79a1;
+      color: white;
+    }
+
+    footer a {
+      color: #ffd700;
+      text-decoration: none;
+    }
+
+    footer a:hover {
+      color: white;
+    }
+
+
+
+
+  </style>
+  <link rel="stylesheet" href="/css/styles.css">
+</head>
+
+<body>
+
+  <!-- Header Section -->
+  <header>
+    <h1 th:text="${blog.title1}">The Art of Mindful Living</h1>
+    <p th:text="${blog.title2}">A beautiful journey to finding peace and balance</p>
+  </header>
+
+  <!-- Blog Content Section -->
+  <div class="blog-container">
+    <div class="blog-header">
+      <h2 th:text="${blog.title3}">How Mindfulness Can Change Your Life</h2>
+      <div class="blog-meta" th:text="'Posted on ' + ${blog.time} + ' by ' + ${blog.name}"></div>
+
+    </div>
+
+    <!-- Author Section -->
+    <div class="author-info">
+      <img src="https://via.placeholder.com/60" alt="Author Image">
+      <div>
+        <strong th:text="${blog.name}">Jane Doe</strong><br>
+        <p th:text="${blog.profession}">Passionate about mindful living and holistic wellness.</p>
+      </div>
+    </div>
+
+    <!-- Blog Content -->
+    <div class="blog-content">
+      <img src="https://via.placeholder.com/1200x600" th:src="${blog.imageUrl}" alt="Mindfulness Image">
+      <p>Mindfulness is more than just meditation. It is about living in the moment, fully present and aware of your thoughts and feelings. By practicing mindfulness, we can experience a profound transformation in how we approach daily life.</p>
+
+      <h3 th:text="${blog.title2}">The Benefits of Mindful Living</h3>
+      <p th:text="${blog.content}">Mindfulness has been scientifically proven to reduce stress, improve mental clarity, and increase emotional resilience. When we are mindful, we are less reactive to negative emotions and more in tune with the present moment.</p>
+
+      <!-- <img src="https://via.placeholder.com/1200x400" alt="Mindfulness Benefits Image" th:src="${blog.imageUrl}"> -->
+      <!-- <p th:text="${blog.content}">It allows us to step back from our busy lives and appreciate the small moments that make life beautiful. Whether it's savoring a warm cup of tea, listening to the sound of the rain, or simply breathing, mindfulness can make every moment a gift.</p> -->
+
+      <!-- <h3>Steps to Start Your Mindfulness Journey</h3>
+      <p>To start practicing mindfulness, find a quiet place where you can sit comfortably. Close your eyes and focus on your breath. Notice the sensation of the air entering and leaving your body. Whenever your mind starts to wander, gently bring your focus back to your breath.</p> -->
+    </div>
+  </div>
+
+  <!-- Back to Top Button -->
+  <div class="back-to-top" id="backToTop">↑</div>
+
+  <!-- Dark Mode Toggle Button -->
+  <button class="dark-mode-btn" id="darkModeBtn">Dark Mode</button>
+
+  <!-- Chatbot Button -->
+    <div id="chatbotBtn">Chat</div>
+
+    <!-- Chatbot Modal -->
+    <div id="chatbotModal">
+        <div class="chat-header">
+            <h4>Chatbot</h4>
+            <button id="closeChat" class="btn btn-light btn-sm float-end">x</button>
+        </div>
+        <div class="chat-body d-flex flex-column">
+            <!-- Chat messages will appear here -->
+        </div>
+        <div class="chat-footer">
+            <input type="text" id="userInput" placeholder="Type a message..." class="form-control">
+            <button id="sendBtn" class="btn btn-primary">Send</button>
+        </div>
+    </div>
+
+  <!-- Footer -->
+  <footer>
+    <p th:text="'Blog by ' + ${blog.name} +'&copy 2024'">Blog by Jane Doe &copy; 2024 | <a href="#">Privacy Policy</a></p>
+  </footer>
+
+  <!-- JavaScript -->
+  <script>
+    // Dark Mode Toggle
+    const darkModeBtn = document.getElementById('darkModeBtn');
+    darkModeBtn.addEventListener('click', () => {
+      document.body.classList.toggle('dark-mode');
+      darkModeBtn.innerText = document.body.classList.contains('dark-mode') ? 'Light Mode' : 'Dark Mode';
+    });
+
+    // Back to Top Button
+    const backToTop = document.getElementById('backToTop');
+    window.addEventListener('scroll', () => {
+      if (window.scrollY > 300) {
+        backToTop.style.display = 'block';
+      } else {
+        backToTop.style.display = 'none';
+      }
+    });
+
+    backToTop.addEventListener('click', () => {
+      window.scrollTo({
+        top: 0,
+        behavior: 'smooth'
+      });
+    });
+  </script>
+  <script src="/js/script.js"></script>
+</body>
+
+</html>

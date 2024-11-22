@@ -1,0 +1,523 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title th:text="${product.title}">Product Page</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+    background-color: [[${product.color}]];
+    color: #fff;
+}
+
+.navbar, .footer {
+    background-color: #333;
+}
+
+.navbar-brand, .nav-link {
+    color: #fff !important;
+}
+
+.product-card {
+    transition: transform 0.2s;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    background-color: rgba(68, 68, 68, 0.8); /* Add transparency */
+    color: #fff;
+    max-width: 300px; /* Define max width for the vertical card */
+    margin: 10px auto; /* Center the card horizontally */
+    overflow: hidden;
+    display: flex;
+    flex-direction: column; /* Ensure content stacks vertically */
+}
+
+.product-card:hover {
+    transform: scale(1.05);
+}
+
+.card-img-top {
+    width: 100%;
+    height: 200px; /* Fixed height for the image */
+    object-fit: cover; /* Ensures the image covers the area */
+}
+
+.card-body {
+    padding: 15px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    flex-grow: 1;
+}
+
+.product-title {
+    height: 3em;
+    overflow: hidden;
+    font-size: 18px;
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+.product-description {
+    font-size: 14px;
+    margin-bottom: 10px;
+    flex-grow: 1; /* Allow description to take available space */
+}
+
+.product-price {
+    font-size: 18px;
+    margin-bottom: 10px;
+}
+
+.discounted-price {
+    color: #28a745;
+    font-weight: bold;
+}
+
+.original-price {
+    text-decoration: line-through;
+    color: #dc3545;
+    margin-left: 10px;
+}
+
+.percentage-off {
+    color: #28a745;
+    font-size: 14px;
+    margin-left: 5px;
+}
+
+.product-color {
+    font-size: 14px;
+    margin-bottom: 10px;
+}
+
+.product-rating {
+    font-size: 14px;
+    margin-bottom: 10px;
+}
+
+.stars {
+    color: #ffc107;
+}
+
+.product-options {
+    margin-bottom: 10px;
+}
+
+.product-options p {
+    margin-bottom: 5px;
+    font-weight: bold;
+}
+
+.product-options label {
+    display: block;
+    margin-bottom: 5px;
+    font-size: 14px;
+}
+
+/* Modal styling */
+.product-form {
+    max-width: 400px;
+    margin: auto;
+    padding: 15px; /* Increased padding for better spacing */
+    background-color: #282c34;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height: auto; /* Allow height to adjust based on content */
+    overflow: hidden; /* Ensure content doesn't overflow */
+    font-size: 14px; /* Reduce font size for better fit */
+}
+
+.form-label {
+    font-weight: bold;
+    margin-top: 10px;
+    color: #ddd;
+}
+
+.form-control {
+    margin-bottom: 15px;
+}
+
+.btn-submit {
+    background-color: #61dafb;
+    color: black;
+    padding: 10px;
+    border-radius: 5px;
+    border: none;
+}
+
+.btn-submit:hover {
+    background-color: #21a1f1;
+}
+
+.add-product-button {
+    position: absolute;
+    top: 10px;
+    right: 430px; /* Adjust this value to position it beside the Edit button */
+    z-index: 1000;
+}
+
+.update-product-button {
+    position: absolute;
+    top: 10px;
+    right: 260px; /* Adjust this value to position it beside the Edit button */
+    z-index: 1000;
+}
+
+.remove-product-button {
+    position: absolute;
+    top: 10px;
+    right: 90px; /* Adjust this value to position it beside the Edit button */
+    z-index: 1000;
+}
+
+.item-card {
+    text-align: center;
+    padding: 20px;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    background-color: #f8f9fa;
+}
+
+.carousel-control-prev, .carousel-control-next {
+    filter: invert(100%);
+}
+
+.carousel {
+    position: relative;
+    max-height: 400px;
+    overflow: hidden; /* Ensures that the images don't exceed the height limit */
+}
+
+.carousel-inner img {
+    width: 100%;
+    height: auto;
+    max-height: 400px;
+    object-fit: cover; /* Ensures the image covers the carousel area while maintaining aspect ratio */
+}
+
+.carousel-control-prev, .carousel-control-next {
+    width: 5%;
+    top: 50%;
+    transform: translateY(-50%);
+    background-color: rgba(0, 0, 0, 0.5);
+    border-radius: 50%;
+    max-height: 40px; /* Optional: Adjust button size if needed */
+}
+
+.carousel-control-prev {
+    left: 15px;
+}
+
+.carousel-control-next {
+    right: 15px;
+}
+
+.carousel-indicators button {
+    background-color: #000;
+}
+
+    </style>
+</head>
+<body th:style="'background-color: ' + ${product.color}">
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-dark">
+        <a class="navbar-brand" href="#" th:text="${product.title}">Brand</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav">
+                <li class="nav-item active">
+                    <a class="nav-link" href="#">Home</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">Products</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">Contact</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">About</a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Edit Button -->
+    <button class="btn btn-primary edit-button" type="button" data-toggle="collapse" data-target="#editForm" aria-expanded="false" aria-controls="editForm">
+        Edit
+    </button>
+
+
+    <!-- Add Product Button -->
+    <button class="btn btn-primary add-product-button" type="button" data-toggle="modal" data-target="#addProductModal">
+        Add Product
+    </button>
+    
+    <!-- remove Product Button -->
+    <button class="btn btn-primary update-product-button" type="button" data-toggle="modal" data-target="#updateProductModal">
+        Update Product
+    </button>
+
+    <!-- remove Product Button -->
+    <button class="btn btn-primary remove-product-button" type="button" data-toggle="modal" data-target="#removeProductModal">
+        Remove Product
+    </button>
+
+    <!-- Edit Form Container -->
+    <div class="collapse" id="editForm">
+        <div class="card card-body mt-3">
+            <form action="/edit" method="post">
+                <div class="form-group d-flex justify-content-end align-items-center">
+                    <!-- Color Picker with Label -->
+                    <div class="d-flex align-items-center mr-3">
+                        <label for="color" class="mr-2" style="color: gray;">Color:</label>
+                        <input type="color" class="form-control" id="color" name="color" style="width: 100px; height: 50px; border: none; cursor: pointer;">
+                    </div>
+                    <!-- Save Button for Color -->
+                    <button type="submit" class="btn btn-primary mr-3">Save</button>
+
+                    <!-- Background Color Picker with Label -->
+                    <div class="d-flex align-items-center mr-3">
+                        <label for="backgroundColor" class="mr-2" style="color: gray;">Background Color:</label>
+                        <input type="color" class="form-control" id="backgroundColor" name="backgroundColor" style="width: 100px; height: 50px; border: none; cursor: pointer;">
+                    </div>
+                    <!-- Save Button for Background Color -->
+                    <button type="submit" class="btn btn-primary">Save</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Modal for Add Product Form -->
+    <div class="modal fade" id="addProductModal" tabindex="-1" role="dialog" aria-labelledby="addProductModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="addProductModalLabel">Add New Product</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form action="/addProduct" method="post" class="product-form">
+                        <div class="form-group">
+                            <label for="image" class="form-label">Image URL</label>
+                            <input type="text" class="form-control" id="image" name="image" placeholder="Paste image URL">
+                        </div>
+                        <div class="form-group">
+                            <label for="brand" class="form-label">Brand</label>
+                            <input type="text" class="form-control" id="brand" name="brand" placeholder="Enter brand">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="price" class="form-label">Description</label>
+                            <input type="text" class="form-control" id="description" name="description" placeholder="Enter price">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="color" class="form-label">Color</label>
+                            <input type="text" class="form-control" id="color" name="color" placeholder="Enter color">
+                        </div>
+                        <div class="form-group">
+                            <label for="price" class="form-label">Price</label>
+                            <input type="text" class="form-control" id="price" name="price" placeholder="Enter price">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="price" class="form-label">Discounted Price</label>
+                            <input type="text" class="form-control" id="discountedPrice" name="discountedPrice" placeholder="Enter price">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="price" class="form-label">Category</label>
+                            <input type="text" class="form-control" id="type" name="type" placeholder="Enter price">
+                        </div>
+                        <button type="submit" class="btn btn-submit btn-block">Submit</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- remove card -->
+    <div class="modal fade" id="updateProductModal" tabindex="-1" role="dialog" aria-labelledby="updateProductModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="updateProductModalLabel">update product</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form action="/editProduct" method="post" class="product-form">
+                        <div class="form-group">
+                            <label for="image" class="form-label">product number you want to update</label>
+                            <input type="number" class="form-control" id="idx" name="idx" placeholder="product number">
+
+                            <div class="form-group">
+                            <label for="image" class="form-label">Image URL</label>
+                            <input type="text" class="form-control" id="image" name="image" placeholder="Paste image URL">
+                            </div>
+                            <div class="form-group">
+                                <label for="brand" class="form-label">Brand</label>
+                                <input type="text" class="form-control" id="brand" name="brand" placeholder="Enter brand">
+                            </div>
+
+                            <div class="form-group">
+                                <label for="brand" class="form-label">Description</label>
+                                <input type="text" class="form-control" id="description" name="description" placeholder="Enter brand">
+                            </div>
+                            <div class="form-group">
+                                <label for="color" class="form-label">Color</label>
+                                <input type="text" class="form-control" id="color" name="color" placeholder="Enter color">
+                            </div>
+                            <div class="form-group">
+                                <label for="price" class="form-label">Price</label>
+                                <input type="text" class="form-control" id="price" name="price" placeholder="Enter price">
+                            </div>
+
+                            <div class="form-group">
+                                <label for="price" class="form-label">Discounted Price</label>
+                                <input type="text" class="form-control" id="discountedPrice" name="discountedPrice" placeholder="Enter price">
+                            </div>
+
+                            <div class="form-group">
+                                <label for="price" class="form-label">Category</label>
+                                <input type="text" class="form-control" id="type" name="type" placeholder="Enter price">
+                            </div>
+
+                            
+
+                        </div>
+                        <button type="submit" class="btn btn-submit btn-block">Submit</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal for Add Product Form -->
+    <div class="modal fade" id="removeProductModal" tabindex="-1" role="dialog" aria-labelledby="removeProductModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="removeProductModalLabel">Remove Product</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form action="/removeProduct" method="post" class="product-form">
+                            <label for="image" class="form-label">product number you want to remove</label>
+                            <input type="number" class="form-control" id="idx" name="idx" placeholder="product number">
+                        <button type="submit" class="btn btn-submit btn-block">Submit</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- Hero Section -->
+    <header class="hero" th:style="'background-color: ' + ${product.color}">
+        <div class="container">
+            <h1 class="display-4" th:text="${product.title}">Welcome to Brand</h1>
+            <p class="lead" th:text="${product.tagLine}">Description</p>
+        </div>
+    </header>
+
+    <!-- Carousel Section -->
+<div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
+  <div class="carousel-indicators">
+    <button type="button" data-target="#carouselExampleIndicators" data-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
+    <button type="button" data-target="#carouselExampleIndicators" data-slide-to="1" aria-label="Slide 2"></button>
+    <button type="button" data-target="#carouselExampleIndicators" data-slide-to="2" aria-label="Slide 3"></button>
+  </div>
+  <div class="carousel-inner">
+    <div class="carousel-item active">
+      <img th:src="${product.imageUrl}" class="d-block w-100" th:alt="${product.imageUrl}">
+    </div>
+    <div class="carousel-item">
+      <img th:src="${product.imageUrl}" class="d-block w-100" th:alt="${product.imageUrl}">
+    </div>
+    <div class="carousel-item">
+      <img th:src="${product.imageUrl}" class="d-block w-100" th:alt="${product.imageUrl}">
+    </div>
+  </div>
+  <button class="carousel-control-prev" type="button" data-target="#carouselExampleIndicators" data-slide="prev">
+    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+    <span class="visually-hidden">Previous</span>
+  </button>
+  <button class="carousel-control-next" type="button" data-target="#carouselExampleIndicators" data-slide="next">
+    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+    <span class="visually-hidden">Next</span>
+  </button>
+</div>
+
+
+    
+    
+
+    <!-- Products Section -->
+    <section class="products py-5">
+        <div class="container">
+            <div class="row">
+                <!-- Thymeleaf Loop for Dynamic Product Rendering -->
+                <div th:each="outp, iterStat : ${product.cards}" class="col-md-6 col-lg-4 mb-4">
+                    <div class="product-card">
+    <img class="card-img-top" th:src="${outp.image}" alt="Product Image">
+    <div class="card-body">
+        <h5 class="product-title" th:text="${outp.brand}">brand</h5>
+        <p class="product-description" th:text="${outp.description}">description</p>
+        <p class="product-price">
+            <span class="discounted-price" th:text="${outp.discountedPrice}">discounted price</span>
+            <span class="original-price" th:text="${outp.price}">price</span>
+            <span class="percentage-off" th:text="${outp.percentage}">percentage% off</span>
+        </p>
+        <p class="product-color" th:text="${outp.color}">Color: color</p>
+        <div class="product-rating">
+            <span class="stars">&#9733;&#9733;&#9733;&#9733;&#9734;</span>
+            <span class="rating">4.2/5 from 1,194,423 Ratings</span>
+        </div>
+        <div class="product-options">
+            <p>Available options:</p>
+            <label><input type="radio" name="option" value="no-exchange" checked> Buy without Exchange</label>
+            <label><input type="radio" name="option" value="with-exchange"> Buy with Exchange</label>
+        </div>
+    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    
+
+
+    
+</div>
+
+
+</section>
+
+    <!-- Footer -->
+    <footer class="footer text-center">
+        <div class="container">
+            <p th:text="'&copy; 2024 ' + ${product.title} + ' All rights reserved.'">&copy; 2024 Brand All rights reserved.</p>
+        </div>
+    </footer>
+
+    
+    <!-- Bootstrap JS and dependencies -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>

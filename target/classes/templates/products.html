@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Product List</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            background-color: #f8f9fa;
+            color: #333;
+        }
+        .navbar, .footer {
+            background-color: #333;
+        }
+        .navbar-brand, .nav-link {
+            color: #fff !important;
+        }
+        .product-card {
+            transition: transform 0.2s;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            background-color: #444;
+            color: #fff;
+        }
+        .product-card:hover {
+            transform: scale(1.05);
+        }
+        .product-title {
+            height: 3em;
+            overflow: hidden;
+        }
+        .footer {
+            padding: 10px 0;
+        }
+        .footer p {
+            margin: 0;
+        }
+        .hero {
+            padding: 60px 0;
+            text-align: center;
+            background-color: #007bff;
+        }
+        .hero h1, .hero p {
+            color: #fff;
+        }
+        .edit-button {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            z-index: 1000;
+        }
+    </style>
+</head>
+<body>
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-dark">
+        <a class="navbar-brand" href="#">Brand</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav">
+                <li class="nav-item active">
+                    <a class="nav-link" href="#">Home</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">Products</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">Contact</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">About</a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Edit Button -->
+    <button class="btn btn-primary edit-button" type="button" data-toggle="collapse" data-target="#editForm" aria-expanded="false" aria-controls="editForm">
+        Edit
+    </button>
+
+    <!-- Edit Form Container -->
+    <div class="collapse" id="editForm">
+        <div class="card card-body mt-3">
+            <form action="/edit" method="post">
+                <div class="form-group d-flex justify-content-end align-items-center">
+                    <!-- Color Picker with Label -->
+                    <div class="d-flex align-items-center mr-3">
+                        <label for="color" class="mr-2" style="color: gray;">Color:</label>
+                        <input type="color" class="form-control" id="color" name="color" style="width: 100px; height: 50px; border: none; cursor: pointer;">
+                    </div>
+                    <!-- Save Button for Color -->
+                    <button type="submit" class="btn btn-primary mr-3">Save</button>
+
+                    <!-- Background Color Picker with Label -->
+                    <div class="d-flex align-items-center mr-3">
+                        <label for="backgroundColor" class="mr-2" style="color: gray;">Background Color:</label>
+                        <input type="color" class="form-control" id="backgroundColor" name="backgroundColor" style="width: 100px; height: 50px; border: none; cursor: pointer;">
+                    </div>
+                    <!-- Save Button for Background Color -->
+                    <button type="submit" class="btn btn-primary">Save</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Hero Section -->
+    <header class="hero">
+        <div class="container">
+            <h1 class="display-4">Welcome to Brand</h1>
+            <p class="lead">Find the best products here.</p>
+        </div>
+    </header>
+
+    <!-- Products Section -->
+    <section class="products py-5">
+        <div class="container">
+            <div class="row">
+                <!-- Thymeleaf Loop for Dynamic Product Rendering -->
+                <div th:each="product : ${products}" class="col-md-4 mb-4">
+                    <div class="card product-card">
+                        <img th:src="@{${product.imageUrl}}" class="card-img-top" th:alt="${product.title}">
+                        <div class="card-body">
+                            <h5 class="card-title product-title" th:text="${product.title}"></h5>
+                            <h6 class="card-subtitle mb-2 text-muted" th:text="${product.brand}"></h6>
+                            <p class="card-text" th:text="${product.description}"></p>
+                            <a href="#" class="btn btn-primary" th:style="'background-color: ' + ${product.color} + '; border: none;'">View Details</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer text-center">
+        <div class="container">
+            <p>&copy; 2024 Brand All rights reserved.</p>
+        </div>
+    </footer>
+
+    <!-- Bootstrap JS and dependencies -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>
